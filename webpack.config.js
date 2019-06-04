@@ -5,6 +5,7 @@ const webpack = require('webpack');
 
 let config = {
   devtool: '',
+  watch: true,
   entry: {
     create: __dirname + '/app/src/js/v1/create.js',
     image: __dirname + '/app/src/js/v1/image.index.js',
