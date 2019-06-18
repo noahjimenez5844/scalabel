@@ -1,19 +1,11 @@
 import Session from './session';
-import type {ConfigType} from '../functional/types';
+import {ConfigType} from '../functional/types';
 import {sprintf} from 'sprintf-js';
 
 /**
  * Contain the single source for URLs
  */
-class Path {
-  session: typeof Session;
-
-  /**
-   * Initialize the state
-   */
-  constructor() {
-    this.session = Session;
-  }
+const path = {
 
   /**
    * Convenient function to get state config
@@ -21,14 +13,15 @@ class Path {
    */
   getConfig(): ConfigType {
     return Session.getState().config;
-  }
+  },
 
   /**
+   * Get the URL of the vendor dashboard
    * @return {string}
    */
   vendorDashboard(): string {
-    return sprintf('/vendor?project_name=%s', this.getConfig().projectName);
+    return sprintf('/vendor?project_name=%s', path.getConfig().projectName);
   }
-}
+};
 
-export default new Path();
+export default path;

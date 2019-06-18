@@ -7,7 +7,9 @@ import Radio from '@material-ui/core/Radio/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 
 interface Props {
+    /** categories of MultipleSelect */
     categories: any[];
+    /** styles of MultipleSelect */
     classes: any;
 }
 
@@ -16,32 +18,41 @@ interface Props {
  * all the categories as a list.
  */
 class MultipleSelect extends React.Component<Props> {
+    /**
+     * This is the state of MultipleSelect
+     */
     public state = {
         selectedValue: 'a'
     };
 
-    public handleChange = (event: { target: { value: any; }; }) => {
+    /**
+     * This is the handleChange function of MultipleSelect
+     * that change the set the state of MultipleSelect.
+     */
+    public handleChange = (event: {
+        /** target to change */
+        target: {
+            /** value to be changed */
+            value: any;
+        }; }) => {
         this.setState({selectedValue: event.target.value});
     };
 
     /**
-     * MultipleSelect render function
-     * @return {jsx} component
+     * Render the category in a list
      */
-    public render() {
-        const {categories} = this.props;
-        const {classes} = this.props;
-
+    public renderCategory(categories: any, classes: any) {
         return (
             <div className={classes.root}>
                 <FormControl className={classes.formControl}>
                     <ListItemText classes={{primary: classes.primary}}
                                   primary={'Label Category'}/>
                     <div className={classes.root}>
-                        {categories.map((name) => (
+                        {categories.map((name: string) => (
                             <FormControlLabel
                                 control={<Radio
-                                    checked={this.state.selectedValue === name}
+                                    checked=
+                                        {this.state.selectedValue === name}
                                     onChange={this.handleChange}
                                     key={name}
                                     value={name}
@@ -57,6 +68,19 @@ class MultipleSelect extends React.Component<Props> {
                 </FormControl>
             </div>
         );
+    }
+
+    /**
+     * MultipleSelect render function
+     */
+    public render() {
+        const {categories} = this.props;
+        const {classes} = this.props;
+        if (!categories) {
+            return (<div> </div>);
+        } else {
+            return this.renderCategory(categories, classes);
+        }
     }
 }
 

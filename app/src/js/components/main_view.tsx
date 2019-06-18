@@ -1,21 +1,22 @@
 import React from 'react';
 
-
-type Props = {
-  views: Array<Object>
+interface Props {
+  /** Views */
+  views: any[];
 }
 
 /**
  * Canvas Viewer
  */
 class MainView extends React.Component<Props> {
-  divRef: Object;
+  /** The container */
+  private divRef?: any;
 
   /**
    * Constructor
    * @param {Object} props: react props
    */
-  constructor(props: Object) {
+  constructor(props: any) {
     super(props);
   }
 
@@ -23,8 +24,8 @@ class MainView extends React.Component<Props> {
    * Render function
    * @return {React.Fragment} React fragment
    */
-  render() {
-    let rectDiv;
+  public render() {
+    let rectDiv: any;
     if (this.divRef) {
       rectDiv = this.divRef.getBoundingClientRect();
     }
@@ -51,7 +52,7 @@ class MainView extends React.Component<Props> {
         }}
              style={{
                display: 'block', height: '100%', position: 'absolute',
-               outline: 'none', width: '100%', background: '#222222',
+               outline: 'none', width: '100%', background: '#222222'
              }}>
           {viewsWithProps}
         </div>

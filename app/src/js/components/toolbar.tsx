@@ -6,23 +6,24 @@ import {renderTemplate, renderButtons} from '../common/label';
 import List from '@material-ui/core/List/List';
 import {genButton} from './general_button';
 
-type ItemType = 'video' | 'image';
-type LabelType = 'box2d' | 'segmentation' | 'lane';
-
+/** This is the interface of props passed to ToolBar */
 interface Props {
+    /** categories of ToolBar */
     categories: any[];
+    /** attributes of ToolBar */
     attributes: any[];
-    itemType: ItemType;
-    labelType: LabelType;
-    classes: any;
+    /** itemType of ToolBar 'video' | 'image' */
+    itemType: string;
+    /** labelType of ToolBar 'box2d' | 'segmentation' | 'lane' */
+    labelType: string;
 }
 /**
  * This is ToolBar component that displays
  * all the attributes and categories for the 2D bounding box labeling tool
  */
 export class ToolBar extends React.Component<Props> {
-    constructor(Props: Readonly<Props>) {
-        super(Props);
+    constructor(props: Readonly<Props>) {
+        super(props);
         this.handleToggle = this.handleToggle.bind(this);
         this.state = {
                 checked: []
@@ -30,10 +31,9 @@ export class ToolBar extends React.Component<Props> {
     }
     /**
      * This function updates the checked list of switch buttons.
-     * @param {array} checked
      * @param {string} switchName
      */
-    private handleToggle = (switchName: any) => () => {
+    private readonly handleToggle = (switchName: any) => () => {
         // @ts-ignore
         const {checked} = this.state;
         const currentIndex = checked.indexOf(switchName);
@@ -51,7 +51,7 @@ export class ToolBar extends React.Component<Props> {
     };
     /**
      * ToolBar render function
-     * @return {jsx} component
+     * @return component
      */
     public render() {
         const {categories, attributes, itemType, labelType} = this.props;
