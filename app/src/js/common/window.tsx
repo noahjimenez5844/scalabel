@@ -7,6 +7,7 @@ import path from './path';
 import {ToolBar} from '../components/toolbar';
 import MainView from '../components/main_view';
 import ImageView from '../components/image_view';
+import LabelView from '../components/label_view';
 import PointCloudView from '../components/point_cloud_view';
 import {sprintf} from 'sprintf-js';
 
@@ -54,14 +55,18 @@ export default class Window {
             labelType={state.config.labelType}
         />
     );
+    let imageView = null;
     let labelView = null;
+    let main = null;
     if (Session.itemType === 'image') {
       /* FIXME: set correct props */
-      labelView = (<ImageView height={0} width={1}/>);
+      imageView = (<ImageView height={0} width={1} zIndex={0} />);
+      labelView = (<LabelView height={200} width={200} zIndex={1} />);
+      main = (<MainView views={[imageView, labelView]} />);
     } else if (Session.itemType === 'pointcloud') {
-      labelView = (<PointCloudView key={'pointCloudView'}/>);
+      imageView = (<PointCloudView key={'pointCloudView'}/>);
+      main = (<MainView views={[imageView]} />);
     }
-    const main = (<MainView views={[labelView]} />);
     const bottomBar = (<div>3</div>);
     const rightSidebar1 = (<div>4</div>);
     const rightSidebar2 = (<div>5</div>);

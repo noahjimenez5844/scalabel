@@ -124,7 +124,7 @@ export interface ConfigType {
   /** Categories */
   categories: string[];
   /** Attributes */
-  attributes: object[];
+  attributes: any[];
   /** Task ID */
   taskId: string;
   /** Worker ID */

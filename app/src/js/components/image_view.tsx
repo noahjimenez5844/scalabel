@@ -35,6 +35,8 @@ interface Props {
   height: number;
   /** image width */
   width: number;
+  /** image view z-index */
+  zIndex: number;
 }
 
 /**
@@ -60,6 +62,9 @@ class ImageView extends React.Component<Props> {
   private canvasWidth: number;
   /** Display to image ratio */
   private displayToImageRatio: number;
+  /** canvas z-index  */
+  private zIndex: number;
+
   // False for image canvas, true for anything else
   /** Up resolution */
   private readonly upRes: boolean;
@@ -78,6 +83,7 @@ class ImageView extends React.Component<Props> {
     this.canvasHeight = props.height;
     this.canvasWidth = props.width;
     this.displayToImageRatio = 1;
+    this.zIndex = props.zIndex;
 
     this.upRes = true;
   }
@@ -199,6 +205,9 @@ class ImageView extends React.Component<Props> {
             getCurrentItem().loaded) {
           this.updateScale();
         }
+        this.canvas.style.position = 'absolute';
+        this.canvas.style.zIndex = this.zIndex;
+        this.redraw();
       }
     }}/>);
   }

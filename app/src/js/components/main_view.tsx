@@ -33,10 +33,10 @@ class MainView extends React.Component<Props> {
     const {views} = this.props;
     let viewsWithProps = views;
     if (rectDiv) {
-      viewsWithProps = React.Children.map(views, (view) => {
+      viewsWithProps = React.Children.map(views, (view, index) => {
             if (rectDiv) {
               return React.cloneElement(view,
-                  {height: rectDiv.height, width: rectDiv.width});
+                  {height: rectDiv.height, width: rectDiv.width, zIndex: index});
             } else {
               return React.cloneElement(view, {});
             }
