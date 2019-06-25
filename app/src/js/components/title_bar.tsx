@@ -8,6 +8,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import * as types from '../actions/action_types';
 import Session from '../common/session';
 import * as _ from 'lodash';
+import {FormattedInputs} from './titlebar_input_field';
 
 const styles: any = (theme: any) => createStyles({
     appBar: {
@@ -118,6 +119,7 @@ class TitleBar extends Component<Props> {
                 <Toolbar variant='dense'>
                     {title}
                     <div className={classes.grow}/>
+                    {FormattedInputs}
                     {buttons}
                 </Toolbar>
             </AppBar>
