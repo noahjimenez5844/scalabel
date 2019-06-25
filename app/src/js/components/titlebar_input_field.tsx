@@ -33,8 +33,7 @@ function TextMaskCustom(props: TextMaskCustomProps) {
             ref={(ref: any) => {
                 inputRef(ref ? ref.inputElement : null);
             }}
-            mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ',
-                /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+            mask={[/\d/, '/', /\d/]}
             placeholderChar={'\u2000'}
             showMask
         />
@@ -54,7 +53,7 @@ interface State {
 export function FormattedInputs() {
     const classes = useStyles();
     const [values, setValues] = React.useState<State>({
-        textmask: '(1  )    -    '
+        textmask: ' / '
     });
 
     const handleChange = (name: keyof State) =>
