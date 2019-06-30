@@ -108,5 +108,7 @@
     "@types/react-text-mask": "^5.4.6",
     "react-text-mask": "^5.4.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "react-number-format": "^4.0.8"
+  }
 }

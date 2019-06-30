@@ -1,9 +1,8 @@
 import React from 'react';
-import MaskedInput from 'react-text-mask';
+import NumberFormat from 'react-number-format';
 import PropTypes from 'prop-types';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
+import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -14,50 +13,69 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         formControl: {
             margin: theme.spacing(1)
+        },
+        input: {
+            color: 'white'
         }
     })
 );
 
-interface TextMaskCustomProps {
+interface NumberFormatCustomProps {
     /** inputRef */
-    inputRef: (ref: HTMLInputElement | null) => void;
+    inputRef: (instance: NumberFormat | null) => void;
+    /** onChange function */
+    onChange: (event: {
+        /** target */
+        target: {
+            /** value */
+            value: string } }) => void;
 }
 
-/** TextMaskCustom */
-function TextMaskCustom(props: TextMaskCustomProps) {
-    const { inputRef, ...other } = props;
+/** NumberFormatCustom function */
+function NumberFormatCustom(props: NumberFormatCustomProps) {
+    const { inputRef, onChange, ...other } = props;
 
     return (
-        <MaskedInput
+        <NumberFormat
             {...other}
-            ref={(ref: any) => {
-                inputRef(ref ? ref.inputElement : null);
+            format='##/##'
+            getInputRef={inputRef}
+            onValueChange={(values: {
+                /** value to change */
+                value: string; }) => {
+                onChange({
+                    target: {
+                        value: values.value
+                    }
+                });
             }}
-            mask={[/\d/, '/', /\d/]}
-            placeholderChar={'\u2000'}
-            showMask
         />
     );
 }
 
-TextMaskCustom.propTypes = {
-    inputRef: PropTypes.func.isRequired
+NumberFormatCustom.propTypes = {
+    inputRef: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired
 } as any;
 
 interface State {
     /** textmask */
     textmask: string;
+    /** numberformat */
+    numberformat: string;
 }
 
-/** FormattedInputs */
+/** FormattedInputs Component */
 export function FormattedInputs() {
     const classes = useStyles();
     const [values, setValues] = React.useState<State>({
-        textmask: ' / '
+        textmask: '(1  )    -    ',
+        numberformat: '1320'
     });
 
-    const handleChange = (name: keyof State) =>
-        (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (name: keyof State) => (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
         setValues({
             ...values,
             [name]: event.target.value
@@ -67,15 +85,17 @@ export function FormattedInputs() {
     return (
         <div className={classes.container}>
             <FormControl className={classes.formControl}>
-                <InputLabel htmlFor='formatted-text-mask-input'>
-                    react-text-mask</InputLabel>
-                <Input
-                    value={values.textmask}
-                    onChange={handleChange('textmask')}
-                    id='formatted-text-mask-input'
-                    inputComponent={TextMaskCustom as any}
-                />
             </FormControl>
+            <TextField
+                className={classes.formControl}
+                value={values.numberformat}
+                onChange={handleChange('numberformat')}
+                id='formatted-numberformat-input'
+                InputProps={{
+                    className: classes.input,
+                    inputComponent: NumberFormatCustom as any
+                }}
+            />
         </div>
     );
 }

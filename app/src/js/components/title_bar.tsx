@@ -120,12 +120,12 @@ class TitleBar extends Component<Props> {
       );
     });
     return (<AppBar position='static' className={classes.appBar}>
+      <FormattedInputs />
       <Toolbar variant='dense'>
         {title}
         <div className={classes.grow} />
         {buttons}
       </Toolbar>
-      <FormattedInputs/>
     </AppBar>
     );
   }
