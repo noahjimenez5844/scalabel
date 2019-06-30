@@ -105,10 +105,9 @@
     "typescript": "^3.3.3333",
     "webpack": "^4.35.0",
     "webpack-cli": "^3.1.0",
-    "@types/react-text-mask": "^5.4.6",
-    "react-text-mask": "^5.4.3"
+    "react-number-format": "^4.0.8"
   },
   "dependencies": {
-    "react-number-format": "^4.0.8"
+
   }
 }
