@@ -39,6 +39,7 @@ function NumberFormatCustom(props: NumberFormatCustomProps) {
         <NumberFormat
             {...other}
             format='##/##'
+            placeholder={'00/99'}
             getInputRef={inputRef}
             onValueChange={(values: {
                 /** value to change */
