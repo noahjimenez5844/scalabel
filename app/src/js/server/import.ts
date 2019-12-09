@@ -2,8 +2,7 @@ import _ from 'lodash'
 import { AttributeToolType, LabelTypeName, ShapeTypeName } from '../common/types'
 import { ItemExport, LabelExport } from '../functional/bdd_types'
 import { makeItem, makeLabel } from '../functional/states'
-import { Attribute, IndexedShapeType,
-  ItemType, LabelType } from '../functional/types'
+import { Attribute, Category, IndexedShapeType, ItemType, LabelType } from '../functional/types'
 
 /**
  * Converts single exported item to frontend state format
@@ -18,7 +17,7 @@ export function convertItemToImport (
   item: Partial<ItemExport>, itemInd: number, itemId: number,
   attributeNameMap: {[key: string]: [number, Attribute]},
   attributeValueMap: {[key: string]: number},
-  categoryNameMap: {[key: string]: number}): ItemType {
+  categories: Category[]): ItemType {
   const partialItemImport: Partial<ItemType> = {
     url: item.url,
     index: itemInd,
@@ -38,11 +37,9 @@ export function convertItemToImport (
       const partialLabelImport = convertLabelToImport(label, shapesImport)
       partialLabelImport.item = itemInd
 
-      const categories: number[] = []
-      if (label.category in categoryNameMap) {
-        categories.push(categoryNameMap[label.category])
-      }
-      partialLabelImport.category = categories
+      const selectedCategory: number[] = parseCategories(categories,
+        label.category)
+      partialLabelImport.category = selectedCategory
 
       const attributes = parseExportAttributes(
         label.attributes, attributeNameMap, attributeValueMap)
@@ -57,6 +54,27 @@ export function convertItemToImport (
   itemImport.shapes = shapesImport
 
   return itemImport
+}
+
+/**
+ * parses a categories, a category tree, based on selected categories
+ * returns a list representing the index of each selected subcategory
+ * @param categories
+ * @param selectedCategories
+ */
+function parseCategories (categories: Category[],
+                          selectedCategory: string[]): number[] {
+  const categoryIDs: number[] = []
+  let currentCategories: Category[] = categories
+  for (const category of selectedCategory) {
+    const indexOfCategory = _.findIndex(currentCategories, { name: category })
+    if (indexOfCategory === -1) {
+      break
+    }
+    categoryIDs.push(indexOfCategory)
+    currentCategories = currentCategories[indexOfCategory].subcategories
+  }
+  return categoryIDs
 }
 
 /**

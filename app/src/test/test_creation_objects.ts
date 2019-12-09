@@ -1,21 +1,30 @@
 import { AttributeToolType, BundleFile,
   HandlerUrl, ItemTypeName, LabelTypeName } from '../js/common/types'
 import { ItemExport } from '../js/functional/bdd_types'
-import { Attribute, TaskType } from '../js/functional/types'
-import { CreationForm, FormFileData, Project } from '../js/server/types'
+import { Attribute, Category, TaskType } from '../js/functional/types'
+import { CreationForm, defaultBoxCategories, FormFileData, Project } from '../js/server/types'
 import { sampleStateExportImage } from './test_export_objects'
 
-const sampleCategories: string[] = [
-  'person',
-  'rider',
-  'car',
-  'truck',
-  'bus',
-  'train',
-  'motorcycle',
-  'bike',
-  'traffic sign',
-  'traffic light'
+const sampleCategories: Category[] = defaultBoxCategories
+
+const sampleMultiLevelCategories: Category[] = [
+  { name: 'person', subcategories: [] },
+  { name: 'rider', subcategories: [
+    { name: 'rider0', subcategories: [] },
+    {name: 'rider1', subcategories: [
+      { name: 'rider10', subcategories: [] }
+    ]}
+  ] },
+  { name: 'car', subcategories: [] },
+  { name: 'truck', subcategories: [] },
+  { name: 'bus', subcategories: [] },
+  { name: 'train', subcategories: [] },
+  { name: 'motor', subcategories: [] },
+  { name: 'bike', subcategories: [
+    { name: 'bike0', subcategories: [] }
+  ] },
+  { name: 'traffic sign', subcategories: [] },
+  { name: 'traffic light', subcategories: [] }
 ]
 
 const sampleAttributes: Array<Partial<Attribute>> = [
@@ -159,11 +168,17 @@ export const sampleFormVideo: CreationForm = {
   pageTitle: sampleTitle,
   taskSize: sampleTaskSize,
   instructions: sampleInstructions,
-  demoMode: true
+  demoMode: false
 }
 
 export const sampleFormFileData: FormFileData = {
   categories: sampleCategories,
+  attributes: sampleAttributes as Attribute[],
+  items: sampleItems
+}
+
+export const sampleMultiLevelCategoryFormFileData: FormFileData = {
+  categories: sampleMultiLevelCategories,
   attributes: sampleAttributes as Attribute[],
   items: sampleItems
 }
@@ -208,7 +223,30 @@ export const sampleProjectVideo: Project = {
     attributes: sampleAttributes as Attribute[],
     taskId: '',
     submitTime: -1,
-    demoMode: true,
+    demoMode: false,
+    submitted: false,
+    autosave: true
+  }
+}
+
+export const sampleMultilevelCategoryProjectImage: Project = {
+  items: sampleItems,
+  config: {
+    projectName: sampleProjectName,
+    itemType: ItemTypeName.IMAGE,
+    labelTypes: [LabelTypeName.BOX_2D],
+    policyTypes: [],
+    taskSize: sampleTaskSize,
+    tracking: false,
+    handlerUrl: HandlerUrl.LABEL,
+    pageTitle: sampleTitle,
+    instructionPage: sampleInstructions,
+    bundleFile: BundleFile.V2,
+    categories: sampleMultiLevelCategories,
+    attributes: sampleAttributes as Attribute[],
+    taskId: '',
+    submitTime: -1,
+    demoMode: false,
     submitted: false,
     autosave: true
   }

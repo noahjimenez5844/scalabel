@@ -12,16 +12,46 @@
             "instructionPage": "https://www.scalabel.ai/doc/instructions/bbox.html",
             "bundleFile": "image_v2.js",
             "categories": [
-                "person",
-                "rider",
-                "car",
-                "truck",
-                "bus",
-                "train",
-                "motorcycle",
-                "bike",
-                "traffic sign",
-                "traffic light"
+                {
+                    "name": "person",
+                    "subcategories": []
+                },
+                {
+                    "name": "rider",
+                    "subcategories": []
+                },
+                {
+                    "name": "car",
+                    "subcategories": []
+                },
+                {
+                    "name": "truck",
+                    "subcategories": []
+                },
+                {
+                    "name": "bus",
+                    "subcategories": []
+                },
+                {
+                    "name": "train",
+                    "subcategories": []
+                },
+                {
+                    "name": "motor",
+                    "subcategories": []
+                },
+                {
+                    "name": "bike",
+                    "subcategories": []
+                },
+                {
+                    "name": "traffic sign",
+                    "subcategories": []
+                },
+                {
+                    "name": "traffic light",
+                    "subcategories": []
+                }
             ],
             "attributes": [
                 {

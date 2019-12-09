@@ -1,7 +1,9 @@
 import { AttributeToolType, LabelTypeName } from '../common/types'
 import { ItemExport, LabelExport } from '../functional/bdd_types'
-import { Attribute, ConfigType, CubeType,
-  ItemType, PolygonType, RectType, State } from '../functional/types'
+import {
+  Attribute, Category, ConfigType,
+  CubeType, ItemType, PolygonType, RectType, State
+} from '../functional/types'
 
 /**
  * converts single item to exportable format
@@ -27,7 +29,7 @@ export function convertItemToExport (config: ConfigType,
   Object.entries(item.labels).forEach(([_, label]) => {
     const labelExport: LabelExport = {
       id: label.id,
-      category: config.categories[label.category[0]],
+      category: parseLabelCategory(label.category, config.categories),
       attributes: parseLabelAttributes(label.attributes, config.attributes),
       manualShape: label.manual,
       box2d: null,
@@ -64,15 +66,15 @@ export function convertItemToExport (config: ConfigType,
  * parses attributes into BDD format
  * @param attributes
  */
-function parseLabelAttributes (labelAttributes: {[key: number]: number[]},
+function parseLabelAttributes (labelAttributes: { [key: number]: number[] },
                                configAttributes: Attribute[]):
-  {[key: string]: (string[] | boolean) } {
-  const exportAttributes: {[key: string]: (string[] | boolean) } = {}
+                              { [key: string]: (string[] | boolean) } {
+  const exportAttributes: { [key: string]: (string[] | boolean) } = {}
   Object.entries(labelAttributes).forEach(([key, attributeList]) => {
     const index = parseInt(key, 10)
     const attribute = configAttributes[index]
     if (attribute.toolType === AttributeToolType.LIST
-        || attribute.toolType === AttributeToolType.LONG_LIST) {
+      || attribute.toolType === AttributeToolType.LONG_LIST) {
       // list attribute case- check whether each value is applied
       const selectedValues: string[] = []
       attributeList.forEach((valueIndex) => {
@@ -98,11 +100,29 @@ function parseLabelAttributes (labelAttributes: {[key: number]: number[]},
 }
 
 /**
+ * converts category as a list of category IDs (indexes) to a list of strings,
+ * where each element reperesents the selected category at a given depth of the
+ * general categories tree
+ * @param configCategories
+ * @param labelCategoryIDs
+ */
+function parseLabelCategory (labelCategoryIDs: number[],
+                             configCategories: Category[]): string[] {
+  const selectedCategory: string[] = []
+  let currentCategories = configCategories
+  for (const categoryID of labelCategoryIDs) {
+    selectedCategory.push(currentCategories[categoryID].name)
+    currentCategories = currentCategories[categoryID].subcategories
+  }
+  return selectedCategory
+}
+
+/**
  * converts state to export format
  * @param state
  */
 export function convertStateToExport (state: State)
-: ItemExport[] {
+  : ItemExport[] {
   const config = state.task.config
   const items = state.task.items
   const exportList: ItemExport[] = []

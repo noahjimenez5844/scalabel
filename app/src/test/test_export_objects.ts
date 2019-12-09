@@ -10,7 +10,7 @@ export const sampleItemExportImage: ItemExport = {
   labels: [
     {
       id: 0,
-      category: 'person',
+      category: ['person'],
       attributes: {},
       manualShape: true,
       box2d: {
@@ -24,7 +24,7 @@ export const sampleItemExportImage: ItemExport = {
     },
     {
       id: 1,
-      category: 'person',
+      category: ['person'],
       attributes: {},
       manualShape: true,
       box2d: {
@@ -38,7 +38,7 @@ export const sampleItemExportImage: ItemExport = {
     },
     {
       id: 2,
-      category: 'person',
+      category: ['person'],
       attributes: {},
       manualShape: true,
       box2d: {
@@ -65,7 +65,7 @@ export const sampleStateExportImage: ItemExport[] =
       labels: [
         {
           id: 0,
-          category: 'person',
+          category: ['person'],
           attributes: {},
           manualShape: true,
           box2d: {
@@ -79,7 +79,7 @@ export const sampleStateExportImage: ItemExport[] =
         },
         {
           id: 1,
-          category: 'person',
+          category: ['person'],
           attributes: {},
           manualShape: true,
           box2d: {
@@ -93,7 +93,7 @@ export const sampleStateExportImage: ItemExport[] =
         },
         {
           id: 2,
-          category: 'person',
+          category: ['person'],
           attributes: {},
           manualShape: true,
           box2d: {

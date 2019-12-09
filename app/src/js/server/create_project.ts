@@ -6,8 +6,8 @@ import { ItemTypeName, LabelTypeName } from '../common/types'
 import { ItemExport } from '../functional/bdd_types'
 import { makeTask } from '../functional/states'
 import {
-  Attribute, ConfigType,
-  ItemType, TaskStatus, TaskType } from '../functional/types'
+  Attribute, Category,
+  ConfigType, ItemType, TaskStatus, TaskType } from '../functional/types'
 import { convertItemToImport } from './import'
 import Session from './server_session'
 import * as types from './types'
@@ -74,7 +74,7 @@ export function parseFiles (labelType: string, files: Files)
     parseItems(files),
     parseAttributes(files, labelType),
     parseCategories(files, labelType)])
-    .then((result: [Array<Partial<ItemExport>>, Attribute[], string[]]) => {
+    .then((result: [Array<Partial<ItemExport>>, Attribute[], Category[]]) => {
       return {
         items: result[0],
         attributes: result[1],
@@ -86,7 +86,7 @@ export function parseFiles (labelType: string, files: Files)
 /**
  * Get default attributes if they weren't provided
  */
-function getDefaultCategories (labelType: string): string[] {
+function getDefaultCategories (labelType: string): Category[] {
   switch (labelType) {
     // TODO: add seg2d defaults (requires subcategories)
     case LabelTypeName.BOX_3D:
@@ -102,20 +102,15 @@ function getDefaultCategories (labelType: string): string[] {
 /**
  * Read categories from yaml file at path
  */
-function readCategoriesFile (path: string): Promise<string[]> {
+function readCategoriesFile (path: string): Promise<Category[]> {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf8', (err: types.MaybeError, file: string) => {
       if (err) {
         reject(err)
         return
       }
-      // TODO: support subcategories
       const categories = yaml.load(file)
-      const categoriesList = []
-      for (const category of categories) {
-        categoriesList.push(category.name)
-      }
-      resolve(categoriesList)
+      resolve(categories)
     })
   })
 }
@@ -125,7 +120,7 @@ function readCategoriesFile (path: string): Promise<string[]> {
  * Use default if file is empty
  */
 export function parseCategories (
-  files: Files, labelType: string): Promise<string[]> {
+  files: Files, labelType: string): Promise<Category[]> {
   const categoryFile = files[types.FormField.CATEGORIES]
   if (util.formFileExists(categoryFile)) {
     return readCategoriesFile(categoryFile.path)
@@ -303,22 +298,6 @@ function getAttributeMaps (
 }
 
 /**
- * Create a map for quick lookup of category data
- * @param configCategories the categories from config file
- * returns a map from category value to its index
- */
-function getCategoryMap (
-  configCategories: string[]): {[key: string]: number} {
-  const categoryNameMap: {[key: string]: number} = {}
-  for (let catInd = 0; catInd < configCategories.length; catInd++) {
-    // map category names to their indices
-    const category = configCategories[catInd]
-    categoryNameMap[category] = catInd
-  }
-  return categoryNameMap
-}
-
-/**
  * gets the max of values and currMax
  * @param values an array of numbers in string format
  */
@@ -344,11 +323,10 @@ export function createTasks (project: types.Project): Promise<TaskType[]> {
   const taskSize = project.config.taskSize
 
   /* create quick lookup dicts for conversion from export type
-   * to external type for attributes/categories
+   * to external type for attributes
    * this avoids lots of indexof calls which slows down creation */
   const [attributeNameMap, attributeValueMap] = getAttributeMaps(
     project.config.attributes)
-  const categoryNameMap = getCategoryMap(project.config.categories)
   const tasks: TaskType[] = []
   // taskIndices contains each [start, stop) range for every task
   const taskIndices: number[] = []
@@ -395,7 +373,7 @@ export function createTasks (project: types.Project): Promise<TaskType[]> {
       const itemId = taskStartIndex + itemInd
       const newItem = convertItemToImport(
         itemsExport[itemInd], itemInd, itemId,
-        attributeNameMap, attributeValueMap, categoryNameMap)
+        attributeNameMap, attributeValueMap, project.config.categories)
 
       maxLabelId = getMax(Object.keys(newItem.labels), maxLabelId)
       maxShapeId = getMax(Object.keys(newItem.shapes), maxShapeId)

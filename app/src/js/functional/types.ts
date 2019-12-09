@@ -10,7 +10,7 @@ export interface LabelType {
   item: number
   /** type of the label */
   type: string
-  /** The category ID */
+  /** list of category IDs (indexes) representing selected sub-categories */
   category: number[]
   /** Attributes */
   attributes: { [key: number]: number[] }
@@ -205,7 +205,7 @@ export interface ConfigType {
   /** Bundle file */
   bundleFile: string
   /** Categories */
-  categories: string[]
+  categories: Category[]
   /** Attributes */
   attributes: Attribute[]
   /** task id */
@@ -251,6 +251,13 @@ export interface TaskType {
   items: ItemType[]
   /** tracks */
   tracks: TrackMapType
+}
+
+export interface Category {
+  /** name */
+  name: string
+  /** sub-categories */
+  subcategories: Category[]
 }
 
 export interface Select {

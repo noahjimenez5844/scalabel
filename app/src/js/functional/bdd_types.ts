@@ -33,8 +33,8 @@ export interface ItemExport {
 export interface LabelExport {
   /** label id */
   id: number
-  /** category */
-  category: string
+  /** array representing each selected subcategory */
+  category: string[]
   /** label attributes- can be list or switch type */
   attributes: { [key: string]: (string[] | boolean) }
   /** if shape was manual */

@@ -1,6 +1,6 @@
 import { AttributeToolType } from '../common/types'
 import { ItemExport } from '../functional/bdd_types'
-import { Attribute, ConfigType } from '../functional/types'
+import { Attribute, Category, ConfigType } from '../functional/types'
 
 /**
  * Stores specifications of project
@@ -60,7 +60,7 @@ export interface CreationForm {
 /* file data parsed from form */
 export interface FormFileData {
   /** categories parsed from form file */
-  categories: string[]
+  categories: Category[]
   /** attributes parsed from form file */
   attributes: Attribute[]
   /** items parsed from form file (may be incomplete) */
@@ -126,29 +126,29 @@ export const defaultEnv: Env = {
 }
 
 /* default categories when file is missing and label is box2D or box3D */
-export const defaultBoxCategories = [
-  'person',
-  'rider',
-  'car',
-  'truck',
-  'bus',
-  'train',
-  'motor',
-  'bike',
-  'traffic sign',
-  'traffic light'
+export const defaultBoxCategories: Category[] = [
+  { name: 'person', subcategories: [] },
+  { name: 'rider', subcategories: [] },
+  { name: 'car', subcategories: [] },
+  { name: 'truck', subcategories: [] },
+  { name: 'bus', subcategories: [] },
+  { name: 'train', subcategories: [] },
+  { name: 'motor', subcategories: [] },
+  { name: 'bike', subcategories: [] },
+  { name: 'traffic sign', subcategories: [] },
+  { name: 'traffic light', subcategories: [] }
 ]
 
 /* default categories when file is missing and label is polyline2d */
 export const defaultPolyline2DCategories = [
-  'road curb',
-  'double white',
-  'double yellow',
-  'double other',
-  'single white',
-  'single yellow',
-  'single other',
-  'crosswalk'
+  { name: 'road curb', subcategories: [] },
+  { name: 'double white', subcategories: [] },
+  { name: 'double yellow', subcategories: [] },
+  { name: 'double other', subcategories: [] },
+  { name: 'single white', subcategories: [] },
+  { name: 'single yellow', subcategories: [] },
+  { name: 'single other', subcategories: [] },
+  { name: 'crosswalk', subcategories: [] }
 ]
 
 // TODO: add default seg2d categories once nested categories are supported

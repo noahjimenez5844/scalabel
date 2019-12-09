@@ -4,10 +4,12 @@ import { createProject, createTasks,
   saveProject, saveTasks } from '../../js/server/create_project'
 import { convertStateToExport } from '../../js/server/export'
 import Session from '../../js/server/server_session'
-import { CreationForm, Project } from '../../js/server/types'
+import { CreationForm, FormFileData, Project } from '../../js/server/types'
 import { getProjectKey, getTaskKey, initStorage } from '../../js/server/util'
 import { sampleFormFileData, sampleFormImage,
-  sampleFormVideo, sampleProjectAutolabel, sampleProjectImage,
+  sampleFormVideo, sampleMultiLevelCategoryFormFileData,
+  sampleMultilevelCategoryProjectImage,
+  sampleProjectAutolabel, sampleProjectImage,
   sampleProjectVideo, sampleTasksImage, sampleTasksVideo } from '../test_creation_objects'
 import { sampleStateExportImage } from '../test_export_objects'
 
@@ -34,7 +36,11 @@ describe('test project.json creation', () => {
   test('video project creation', () => {
     return testProjectCreation(sampleFormVideo, sampleProjectVideo)
   })
-
+  test('image project creation with multi level categories', () => {
+    return testProjectCreation(sampleFormImage,
+      sampleMultilevelCategoryProjectImage,
+      sampleMultiLevelCategoryFormFileData)
+  })
   test('image project saving', () => {
     return testProjectSaving(sampleProjectImage)
   })
@@ -78,8 +84,9 @@ describe('create with auto labels', () => {
  * Tested that desired project is created from form
  */
 async function testProjectCreation (
-  sampleForm: CreationForm, sampleProject: Project): Promise<void> {
-  return createProject(sampleForm, sampleFormFileData).then((project) => {
+  sampleForm: CreationForm, sampleProject: Project,
+  formFileData: FormFileData = sampleFormFileData): Promise<void> {
+  return createProject(sampleForm, formFileData).then((project) => {
     expect(project).toEqual(sampleProject)
     return
   })

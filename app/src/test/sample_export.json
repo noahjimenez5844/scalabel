@@ -9,7 +9,9 @@
         "labels": [
             {
                 "id": 0,
-                "category": "person",
+                "category": [
+                    "person"
+                ],
                 "attributes": {},
                 "manualShape": true,
                 "box2d": {
@@ -23,7 +25,9 @@
             },
             {
                 "id": 1,
-                "category": "person",
+                "category": [
+                    "person"
+                ],
                 "attributes": {},
                 "manualShape": true,
                 "box2d": {
